@@ -1,6 +1,10 @@
 # Ubuntu Package Search + Package Data Processing Pipeline
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+The project is a two parter:
+- Data processing pipeline for ubuntu packages data
+- Information Retrieval System for ubuntu packages
+
 ## Project Structure
 - docs: Reports for FEUP-M.EIC-PRI course (Faculty of Engineering of University of Porto)
 - graphical-interface: web app for searching ubuntu packages
