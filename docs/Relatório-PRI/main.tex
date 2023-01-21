@@ -1,0 +1,85 @@
+\documentclass[a4paper, 6pt, twocolumn]{article}
+
+\usepackage{color}
+\definecolor{engineering}{rgb}{0.549, 0.176, 0.098}
+
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+    plainpages=false, 
+    pdfpagelayout=SinglePage,
+    bookmarksopen=false,
+    bookmarksnumbered=true,
+    breaklinks=true,
+    linktocpage,
+    colorlinks=true,
+    linkcolor=engineering,
+    urlcolor=engineering,
+    filecolor=engineering,
+    citecolor=engineering,
+    allcolors=engineering
+}
+
+\usepackage[
+backend=biber,
+style=chem-acs,
+]{biblatex} 
+\addbibresource{references.bib}
+\setlength{\columnsep}{10mm}
+
+\date{October, 2022}
+
+\begin{document}
+
+
+
+ % Do not change the following line
+\linespread{0.5}
+
+\title{\textbf{Information Retrieval System for Ubuntu Packages}\\Information Processing and Retrieval Report}
+
+\author{Marcelo Couto$^{1}$   José Silva $^2$   Francisco Oliveira$^3$ \\ \\ 
+$^1$up201906086@up.pt, $^2$up201904775@up.pt, $^3$up201907361@up.pt \\ \\ 
+Faculty of Engineering of the University of Porto \\ 
+Porto, Portugal}
+
+
+
+% Do not change the following three lines
+\maketitle 
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize{Information Processing and Retrieval Report}}
+\fancyhead[R]{\footnotesize{Marcelo Couto, José Silva and Francisco Oliveira}}
+\fancyfoot[C]{\thepage}
+
+
+\input{abstract}
+\input{introduction}
+
+\part{Data Preparation}
+
+\input{M1/collection}
+\input{M1/preparation}
+\input{M1/characterization}
+\input{M1/search-tasks}
+
+
+\part{Information Retrieval}
+
+\input{M2/indexing}
+\input{M2/evaluation}
+
+\part{Search System}
+
+\input{M3/improvements}
+\input{M3/improvement-evaluation}
+
+
+\input{conclusion}
+\input{references}
+\include{appendix}
+\end{document}

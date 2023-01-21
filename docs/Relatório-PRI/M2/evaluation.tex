@@ -1,0 +1,159 @@
+\section{Retrieval and Evaluation}
+
+\subsection{Changes to the Information Needs}
+
+The information needs were drastically altered because their format was not the correct one, as they did not referring to specific necessities to be fulfilled by the system, but rather features. 
+
+Some of our system's new information needs tend to either have only one valid result or purposely focus heavily on exact matches. For instance, "Information on what the 'automake' package is meant to do" has only one relevant document to retrieve, which the system does in first place (precision at 1 is 1.0). Another example is "Information on what packages are required or suggested for the functioning of ’libgconf-2.4’ package" can be best fulfilled by making an exact match of the package name with 'Depends' and 'Suggests' fields, returning, again, a flawless result.
+
+As such, some of the information needs are not suitable for evaluation in regards to metrics. The information needs addressed in the evaluation are the same for which queries were formulated: % TODO make this part better
+
+\begin{enumerate}
+    \item Information on the java development kit packages available
+    \item Information on what web servers are available in Ubuntu's repository
+    \item Information on what hex file editors are available
+    \item Information on what python cryptography libraries are available
+\end{enumerate}
+
+\subsection{Retrieval}
+
+To evaluate our information retrieval system, we created queries to answer the information needs refined in this iteration. The \emph{SOLR} search platform offers multiple \emph{query parsers}. We chose to use \emph{eDisMax} because it provided a wide range of parameters to tune as well as a user friendly way to make queries on some selected fields. 
+
+While optimizing our queries we targeted the following parameters:
+\begin{description}
+    \item [Query (q):] this field represents the query string this is where we apply term boosts and proximity searches between tokens;
+    \item [Query Fields(qf):] determines what field will be used when matching the query and lets us apply field boosts;
+    \item [Query Slop(qs):] number of positions a token needs to be moved to be considered a match;
+\end{description}
+
+We split our queries in two types:
+
+\begin{description}
+    \item[Basic Query] no weights in Query Fields and it's used when querying the schema-less and base version of our information retrieval system
+    \item[Enhanced Query] aforementioned boosts and is meant to improve the performance of our system
+\end{description}
+
+
+\subsubsection{Information need 1}
+
+These are the parameters for the base version of our query:
+
+\begin{description}
+    \item [Query (q):] (java dev kit) -doc
+    \item [Query Fields(qf):] Package Description Section
+\end{description}
+
+These are the parameters for the enhanced version of our query:
+
+\begin{description}
+    \item [Query (q):] (java\^{}3 dev\^{}2 kit) -doc -source
+    \item [Query Fields(qf):] Package Description Section
+\end{description}
+
+\subsubsection{Information need 2}
+
+These are the parameters for the base version of our query:
+
+\begin{description}
+
+    \item [Query (q):] "(web OR HTTP) AND server AND Section:web"
+    \item [Query Fields(qf):] Package Description Section
+\end{description}
+
+These are the parameters for the enhanced version of our query:
+
+\begin{description}
+    \item [Query (q):] ("web server"\~{}3 OR "HTTP server"\~{}3) AND Section:web
+    \item [Query Fields(qf):] Package\^{}4 PackageExact\^{}5 Description Section\^{}2 DescriptionFull\^{}3
+\end{description}
+
+\subsubsection{Information need 3}
+
+These are the parameters for the base version of our query:
+
+\begin{description}
+    \item[Query (q):] hex edit
+    \item[Query Fields(qf):] Package Description Section
+\end{description}
+
+These are the parameters for the enhanced version of our query:
+
+\begin{description}
+    \item[Query (q):] hex edit\^{}2
+    \item[Query Fields(qf):] Package Description Section
+    \item[Query Slop(qs):] 0
+\end{description}
+
+\subsubsection{Information need 4}
+
+These are the parameters for the base version of our query:
+
+\begin{description}
+    \item[Query (q):] python crypto
+    \item[Query Fields(qf):] Package Description Section
+\end{description}
+
+These are the parameters for the enhanced version of our query:
+
+\begin{description}
+    \item[Query (q):] python crypto\^{}2
+    \item[Query Fields(qf):] Package\^{}4 Description Section\^{}2 DescriptionFull\^{}3
+\end{description}
+
+\subsection{Setups Compared}
+
+With the intent of evaluating the efforts made into the indexing and retrieval tasks, 3 setups were created for the evaluation of the information retrieval system:
+
+\begin{description}
+    \item[Bad setup] no schema was loaded and the base queries were used
+    \item[Base setup] the schema we built was loaded yet the queries used are still the base queries for each information need
+    \item[Good setup] the schema was loaded and the enhanced queries are used
+\end{description}
+
+\subsection{Results}
+
+
+For \textbf{information need number 1} (java development kit), the entirety of the desired results were known, and these were just 11 packages. As such, this information need was evaluated with regards to its precision at 5 (P@5), precision at 10 (P@10) and recall, depicted in Table \ref{tab:metrics-info-1}. 
+
+\input{resources/evaluation-m2/info-need-1-evaluation-metrics}
+
+
+The evaluation of this information need was 100\% automatic, as we simply defined the expected results and run a \emph{python} script that queried the system and calculated the metrics.
+
+
+\textbf{Information needs 2 3 and 4} were evaluated in a different fashion: as all relevant documents for these were much harder to retrieve, part of the evaluation was done manually. From the results obtained from the query made to the \emph{good setup} (around 30), each document was marked as relevant or not by ourselves (the user, in this case). After this, with the help of \emph{python} scripts, evaluation metrics and methods based on precision and the precision-recall trade-off were calculated for all the setups, like precision at 5 (P@5), precision at 10 (P@10), Average Precision (AP) and Precision Recall Curves. Images \ref{fig:info-need-2-prcurve}, \ref{fig:info-need-3-prcurve} and \ref{fig:info-need-4-prcurve} depict the precision recall curves for the different 'schemas' on each information need while the tables \ref{tab:metrics-info-2}, \ref{tab:metrics-info-3} and \ref{tab:metrics-info-4} show the evaluation metrics' values.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m2/Information on what web servers are available in Ubuntu's repository.pdf}
+    \caption{Information Need 2 Precision-Recall Curve}
+    \label{fig:info-need-2-prcurve}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m2/Information on what hex file editors are available.pdf}
+    \caption{Information Need 3 Precision-Recall Curve}
+    \label{fig:info-need-3-prcurve}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m2/Information on what python cryptography libraries are available.pdf}
+    \caption{Information Need 4 Precision-Recall Curve}
+    \label{fig:info-need-4-prcurve}
+\end{figure}
+
+
+To evaluate each setup as a whole, we calculated their Mean Average Precision, shown in Table \ref{tab:maps}, and Mean Precision at 5 (mean of the precision values at 5 of the information needs), shown in Table \ref{tab:mp5}.
+
+\input{resources/evaluation-m2/mean-average-precision}
+\input{resources/evaluation-m2/mean-precision-at5}
+
+\subsection{Discussion}
+
+The metrics and plots drawn show that the schema defined improves significantly the effectiveness of our system. However, the efforts put into the retrieval part were not so fruitful, as the 'Good setup' is not noticeably better than the 'Base setup'. In fact, the latter one proves to be slightly better when it comes to the top 5 results. Because our information system mostly aims to provide the user with a short list of relevant documents, precision at lower recall values is an important metric. Taking that into account, the changes made to the queries applied in the 'Good setup' have actually proven to me mostly harmful. 
+
+There are also some information needs that did not quite have as much success (information need 2), proving there is room for improvement in both indexing and retrieval.
+
+Even so, the results obtained were quite satisfactory, especially regarding the schema established.

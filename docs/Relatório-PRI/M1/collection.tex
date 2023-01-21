@@ -1,0 +1,49 @@
+\section{Collection}
+\label{sec:Collection}
+
+\subsection{Data Sources}
+
+The package's names were firstly collected from the 4 main \emph{Ubuntu}'s repositories, from the official website\footnote{\url{http://archive.ubuntu.com/ubuntu/dists/jammy/}}, guaranteeing the integrity and legitimacy of the data. The packages are divided into 4 repositories:
+
+\begin{enumerate}
+    \item \textbf{Main: } Canonical-supported free and open-source software (6090 Packages)
+    
+    \item \textbf{Universe: } Community-maintained free and open-source software (59969 Packages)
+    
+    \item \textbf{Restricted: } Proprietary drivers for devices (686 Packages)
+    
+     \item \textbf{Multiverse: } Software restricted by copyright or legal issues (881 Packages)
+\end{enumerate}
+
+The rest of the information was collected from \emph{Aptitude}\footnote{\url{https://www.debian.org/doc/manuals/aptitude/rn01re01.en.html}}. Aptitude is a command line high level interface for the package manager.
+
+\subsection{Collection Process}
+
+In order to obtain the list of packages from each repository, we downloaded a compressed file with data from each package\cite{debctrlpackage}. 
+
+When extracted, these files had data in a format that resembled a Debian control file\cite{ubuntuarchive}, but had fields that were not contemplated in Debian’s definition. After extraction we got the package names from these files using a script and stored them in a file where each line contained a package’s name. 
+
+As a last step we then downloaded each package's information from Aptitude because it provided better descriptions that were needed for the next steps and parsed it to a CSV file (Comma Separated Value) with the help of a parser built by ourselves.
+
+After collection we had a total of 67626 records that occupied 38.7 MiB. It is worth noting that we kept our dataset separated by repository until the end of the processing phase.
+
+These steps are illustrated in Diagram  \ref{fig:pipeline}.
+
+\begin{figure*}[]
+\centering
+  \includegraphics[width=0.8\textwidth]{resources/pipeline_diagram.pdf}
+  \label{fig:pipeline}
+  \caption{Pipeline}
+\end{figure*}
+
+\subsection{Makefile}
+
+To help with data collection we prepared two tasks to be performed in our \textit{makefile}:
+
+\begin{description}
+    \item[fetch\_raw\_package\_lists] This task, as the name suggests, downloads package's information from the \emph{Ubuntu} archives and places them inside a folder called \textit{raw\_data}.
+    
+    \item[build\_package\_lists] This task is used to scrape the package name out of \emph{Ubuntu}'s package descriptions that were downloaded in the previous step. The results are placed into a folder called \textit{package\_lists}
+    
+    \item[fetch\_packages] This task downloads package data for each repository from Aptitude into a CSV file. The results are placed into a folder called \textit{raw} inside \textit{csv\_data}
+\end{description}

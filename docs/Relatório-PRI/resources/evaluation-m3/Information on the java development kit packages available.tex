@@ -1,0 +1,36 @@
+\begingroup
+    \renewcommand{\arraystretch}{2} % Default value: 1
+    \begin{table}[]
+        \centering
+        \begin{tabular}{l | l | l}
+            Metric & Value & Schema \\
+            \hline
+            Average Precision & 0.312032 & Rocchio \\
+            Precision at 10 (P@10) & 0.200000 & Rocchio \\
+            Precision at 5 (P@5) & 0.400000 & Rocchio\\
+            Recall & 0.727273 & Rocchio\\
+            \hline
+            Average Precision & 0.804292 & IBoosts\\
+            Precision at 10 (P@10) & 0.800000 & IBoosts\\
+            Precision at 5 (P@5) & 1.000000 & IBoosts\\
+            Recall & 0.909091 & IBoosts\\
+            \hline
+            Average Precision & 0.804292 & Good\\
+            Precision at 10 (P@10) & 0.800000 & Good\\
+            Precision at 5 (P@5) & 1.000000 & Good\\
+            Recall & 0.909091 & Good\\
+            \hline
+            Average Precision & 0.768750 & Base\\
+            Precision at 10 (P@10) & 0.800000 & Base\\
+            Precision at 5 (P@5) & 1.000000 & Base\\
+            Recall & 0.909091 & Base\\
+            \hline
+            Average Precision & 0.000000 & Bad \\
+            Precision at 10 (P@10) & 0.000000 & Bad \\
+            Precision at 5 (P@5) & 0.000000 & Bad \\
+            Recall & 0.000000 & Bad \\
+        \end{tabular}
+        \caption{Evaluation Metrics for Information Need 1}
+        \label{tab:metrics-info-1-2}
+    \end{table}
+\endgroup

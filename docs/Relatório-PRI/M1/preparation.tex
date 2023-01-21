@@ -1,0 +1,47 @@
+\section{Preparation}
+\label{sec:Preparation}
+
+Following data collection we moved on to processing. 
+
+The first step we took was to remove any line that contained a missing package name and to remove duplicate packages with same attributes. This was needed because our script created lines even if the package name was missing, i.e. it was missing from Aptitude's database. After processing the data with the help of a \textit{Bash} script, our dataset contained a total of 66372 records when considering the sum of records from all repositories.
+
+The next processing step we took was performed with a \textit{Python} script: to add a new column to our dataset that contained the name of the repository from where each package came. We took this step because we thought that this information could be useful to analyse our data. After adding this column we ran a task that joined the data from all the repositories into a single dataset.
+
+Finally we performed what we called final processing. This step consists of multiple processing steps that were so as to group all steps that needed the dataset loaded into memory for performance and efficiency reasons. The first task performed was to remove columns that only contained missing values like: \textit{Installed-Size} and \textit{Pre-Depends}. Then came the removal of the repository's prefix from the column \textit{Section}. Finally, the addition of a column with the average number of words each package's description has. For this step we used \textit{Python}\footnote{\url{https://www.python.org/}} and a library called \textit{Pandas}\footnote{\url{https://pandas.pydata.org/}}. 
+
+Diagram  \ref{fig:pipeline} illustrates the full pipeline, from data collection, to data preparation ending in data storage and analysis.
+
+
+\subsection{Makefile}
+
+Again, to help with data preparation, we created six tasks to be performed in our \textit{makefile}:
+
+\begin{description}
+    \item[remove\_duplicates] This task deletes the aforementioned duplicate and empty lines. The result is placed inside a folder called \textit{clean} at \textit{csv\_data}
+    
+    \item[add\_origin] This task is used to create the column that contains information about a package's origin. The result is placed inside a folder called \textit{clean} at \textit{csv\_data}
+    
+    \item[clean\_no\_dups] This tasks erases the intermediate files that the task remove\_duplicates creates.
+    
+    \item[join\_repos] This task joins the information about all the repositories into a single file. The result is placed inside a folder called \textit{clean} at \textit{csv\_data}
+    
+    \item[final\_processing] This task performs the final processing mentioned above. The result is placed inside a folder called \textit{clean} at \textit{csv\_data}
+    
+    \item[clean\_after\_final\_processing] This task deletes the file \textit{all.csv} created by \textit{join\_repos} at \textit{csv\_data/clean}
+\end{description}
+
+\subsection{Conceptual Data Model}
+
+With the preparation of the data concluded, we were left with a dataset composed by data on all packages belonging to the four main \emph{Ubuntu} repositories.
+
+The dataset is in .csv format and is composed by the the fields characterized in Table \ref{tab:fields}.
+
+The data's conceptual model is depicted in Diagram \ref{fig:data-mode-diagram}.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/domain-model.pdf}
+    \caption{Conceptual Data Model Diagram}
+    \label{fig:data-mode-diagram}
+\end{figure}

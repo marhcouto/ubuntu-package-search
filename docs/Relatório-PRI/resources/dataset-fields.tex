@@ -1,0 +1,27 @@
+
+
+
+
+\begingroup
+    \renewcommand{\arraystretch}{2} % Default value: 1
+    \begin{table}[!htb]
+        \centering
+        \begin{tabular}{@{}p{20mm} | l p{37mm}}
+            \textbf{Field}     &          \textbf{Type}   & \textbf{Description}    \\  \hline 
+            \texttt{Package}                  & text    & Package name        \\ 
+            \texttt{Version}                   & text        & Denotes the version of the package \\ 
+            \texttt{Section}                   & text     & Category based on the software it contains \\ 
+            \texttt{Essential}            & bool  & Whether the package is required for proper (yes/no) functioning of the system   \\ 
+            \texttt{Depends}               & list       & List of packages this one depends on      \\ 
+            \texttt{Recommends}             & list       & List of packages that would be found together with this one in all but unusual installations.        \\ 
+            \texttt{Suggests}             & list       & List of packages related to this one and that could enhance its usefulness          \\ 
+            \texttt{Breaks}          & list          & List of packages this package breaks         \\ 
+            \texttt{Conflicts}              & list       & List of packages this package conflicts with  \\
+            \texttt{Replaces}        & list            & List of packages this package replaces          \\
+            \texttt{Description}       & string    & Textual description of the package's contents and purposes \\ 
+            \texttt{Origin}   & string            & Repository the package originates from     \\ 
+            \texttt{N Words Description}  & integer   & Number of words in description field      \\ 
+        \end{tabular}
+        \caption{Final Dataset fields} \label{tab:fields}
+    \end{table}
+\endgroup

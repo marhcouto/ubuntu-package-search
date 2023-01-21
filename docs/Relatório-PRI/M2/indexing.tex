@@ -1,0 +1,34 @@
+\section{Indexing}
+
+\subsection{Indexing Process}
+
+To index our documents we chose to use \emph{SOLR}\footnote{\url{https://solr.apache.org/}}. The data we chose to index was all but the version field, because our system only provides one version of each package, meaning there are no relevant queries regarding that field. In the end we indexed 66372 documents.
+
+Afterwards, we created two cores on \emph{SOLR} to define our two schemas. Once the cores were created, using the \emph{SOLR}'s API , we firstly defined the schema and then imported the data (as Listing \ref{lst:indexing-process}).
+
+
+
+\subsection{Schema Definition}
+
+We defined two systems: an optimized system with a personalized schema (\emph{pri\_solr\_ngrams}) and one without schema (\emph{pri\_solr\_bad}). 
+
+In order to process our fields we created the following types using \emph{SOLR}'s filters\cite{solr_filters} and tokenizers\cite{solr_tokenizers} for the optimized system:
+\begin{description}
+    \item[packageName] we used \textit{StandardTokenizerFactory} and the following filters \textit{ASCIIFoldingFilterFactory}, \textit{LowerCaseFilterFactory}, \textit{EdgeNGramFilterFactory (3 to 7)}. With the aforementioned tokenizers and filters we were able to produce a case insensitive field that matches all searches with partially the package name.
+    
+    \item[packageNameExact] for this field type we used the \textit{KeywordTokenizerFactory} and no filters. This type later used to boost searches that exact match a package's name.
+    
+    \item[packageDesc] we applied the \textit{StandardTokenizerFactory} and the following filters \textit{PatternReplaceFilterFactory} to remove commas, \textit{TrimFilterFactory}, \textit{LowerCaseFilterFactory}, \textit{ASCIIFoldingFilterFactory}, \textit{EnglishPossessiveFilterFactory}, \textit{SnowballPorterFilterFactory}, \textit{EdgeNGramFilterFactory} with a size from 3 to 6. The use of the Snowball stemmer along with the N-Gram filter allows the user to search for partial words instead of only allowing to search for full words.
+    
+    \item[packageDescFull] this type is used to boost exact match searches. It only uses a \textit{StandardTokenizerFactory} because in some descriptions the author joined multiple words with special characters like \textit{web/proxy}. This type applies the lower case and ASCII filter too.
+    
+    \item[packageEssential] this type only applies a synonym filter so that the query treats both yes and true as no and false as synonyms
+    
+    \item[packageOrig] this type uses the \textit{KeywordTokenizerFactory} so that the value of the fields isn't changed and applies a \textit{LowerCaseFilterFactory} to allow case insensitive search.
+    
+    \item[packageList] This type is applied to lists. It uses the \textit{WhitespaceTokenizerFactory} because we split our items with white spaces. It applies the \textit{ASCIIFoldingFilterFactory} and \textit{LowerCaseFilterFactory} 
+\end{description}
+
+The indexed fields are portrayed in Table \ref{tab:indexed-fields}.
+
+

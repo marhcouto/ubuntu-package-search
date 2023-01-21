@@ -1,0 +1,328 @@
+{
+	"add-field-type": [
+        {
+            "name":"packageName",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    {
+                        "class": "solr.EdgeNGramFilterFactory",
+                        "minGramSize": "3",
+                        "maxGramSize": "7"
+                    }
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.LowerCaseFilterFactory" }
+                ]
+            }
+        },
+        {
+            "name":"packageNameExact",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.KeywordTokenizerFactory"
+                },
+                "filters":[]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true }
+                ]
+            }
+        },
+        {
+            "name":"packageDesc",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {
+                        "class": "solr.PatternReplaceFilterFactory",
+                        "pattern": ",",
+                        "replacement": "",
+                        "replace": "all"
+                    },
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.EnglishPossessiveFilterFactory" },
+                    { "class": "solr.SnowballPorterFilterFactory" },
+                    {
+                        "class": "solr.EdgeNGramFilterFactory",
+                        "minGramSize": "3",
+                        "maxGramSize": "6"
+                    }
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.EnglishPossessiveFilterFactory" },
+                    { "class": "solr.SnowballPorterFilterFactory" },
+                    {
+                        "class": "solr.EdgeNGramFilterFactory",
+                        "minGramSize": "3",
+                        "maxGramSize": "6"
+                    }
+                ]
+            }
+        },
+        {
+            "name":"packageDescFull",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true }
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true }
+                ]
+            }
+        },
+        {
+            "name": "packageDescNoParse",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer": {
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {
+                        "class": "solr.PatternReplaceFilterFactory",
+                        "pattern": ",",
+                        "replacement": "",
+                        "replace": "all"
+                    },
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.EnglishPossessiveFilterFactory" },
+                    { "class": "solr.SnowballPorterFilterFactory" },
+                    {
+                        "class": "solr.EdgeNGramFilterFactory",
+                        "minGramSize": "3",
+                        "maxGramSize": "6"
+                    }
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.WhitespaceTokenizerFactory"
+                },
+                "filters":[]
+            }
+        },
+        {
+            "name": "packageEssential",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": { "class": "solr.KeywordTokenizerFactory" },
+                "filters": [
+                    { "class":"solr.LowerCaseFilterFactory" },
+                    {
+                        "class": "solr.SynonymGraphFilterFactory",
+                        "expand": true,
+                        "ignoreCase": true,
+                        "synonyms": "/var/solr/data/pri_solr_final/data/synonyms.txt"
+                    },
+                    { "class": "solr.FlattenGraphFilterFactory" }
+                ]
+            },
+            "queryAnalyzer": {
+                "tokenizer": { "class": "solr.KeywordTokenizerFactory" },
+                "filters": [
+                    { "class": "solr.TrimFilterFactory" }
+                ]
+            }
+        },
+        {
+            "name":"packageOrig",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.KeywordTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"}
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.KeywordTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"}
+                ]
+            }
+        },
+        {
+            "name":"packageList",
+            "class":"solr.TextField",
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.WhitespaceTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    { "class":"solr.LowerCaseFilterFactory" }
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.WhitespaceTokenizerFactory"
+                },
+                "filters":[
+                    { "class": "solr.TrimFilterFactory" },
+                    { "class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true },
+                    { "class":"solr.LowerCaseFilterFactory" }
+                ]
+            }
+        },
+        {
+            "name": "packageInteger",
+            "class": "solr.IntPointField"
+        }
+    ],
+    "add-field": [
+        {
+            "name": "Package",
+            "type": "packageName",
+            "indexed": true,
+            "termVectors": "true",
+            "termPositions": "true",
+            "termOffsets": "true"
+        },
+        {
+            "name": "PackageExact",
+            "type": "packageNameExact",
+            "indexed": true
+        },
+        {
+            "name": "Description",
+            "type": "packageDesc",
+            "indexed": true,
+            "termVectors": "true",
+            "termPositions": "true",
+            "termOffsets": "true"
+        },
+        {
+            "name": "DescriptionFull",
+            "type": "packageDescFull",
+            "indexed": true
+        },
+        {
+            "name": "DescriptionNoParse",
+            "type": "packageDescNoParse",
+            "indexed": true
+        },
+        {
+            "name": "Essential",
+            "type": "packageEssential",
+            "indexed": true
+        },
+        {
+            "name": "Depends",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Recommends",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Suggests",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Breaks",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Conflicts",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Replaces",
+            "type": "packageList",
+            "indexed": true
+        },
+        {
+            "name": "Origin",
+            "type": "packageOrig",
+            "indexed": true
+        },
+        {
+            "name": "Section",
+            "type": "packageOrig",
+            "indexed": true
+        },
+        {
+            "name": "Downloads",
+            "type": "packageInteger"
+        },
+        {
+            "name": "Regularly_Used",
+            "type": "packageInteger"
+        },
+        {
+            "name": "Recently_Updated",
+            "type": "packageInteger"
+        }
+    ],
+    "add-copy-field": [
+        {
+            "source": "Description",
+            "dest": "DescriptionFull"
+        },
+        {
+            "source": "Package",
+            "dest": "PackageExact"
+        },
+        {
+            "source": "Description",
+            "dest": "DescriptionNoParse"
+        }
+    ]
+}

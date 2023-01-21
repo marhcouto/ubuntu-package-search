@@ -1,0 +1,87 @@
+\appendix
+
+\section{Collection}
+
+\input{resources/dataset-fields}
+
+\newpage
+
+\section{Characterization}
+
+
+\begin{figure}[!hb]
+    \centering
+    \includegraphics[width=\linewidth]{resources/ruby_wordcloud.pdf}
+    \caption{Ruby Word Cloud}
+    \label{fig:word-cloud}
+\end{figure}
+
+\newpage
+\section{Indexing}
+
+\input{resources/indexin-process}
+
+\begingroup
+    \renewcommand{\arraystretch}{2} % Default value: 1
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{ll}
+            Field           & Type             \\
+            \hline
+            Package         & packageName      \\
+            PackageExact    & packageNameExact \\
+            Description     & packageDesc      \\
+            DescriptionFull & packageDescFull  \\
+            Essential       & packageEssential \\
+            Depends         & packageList      \\
+            Recommends      & packageList      \\
+            Suggests        & packageList      \\
+            Breaks          & packageList      \\
+            Conflicts       & packageList      \\
+            Replaces        & packageList      \\
+            Origin          & packageOrig      \\
+            Section         & packageOrig     
+        \end{tabular}
+        \caption{Document fields and their types}
+        \label{tab:indexed-fields}
+    \end{table}
+\endgroup
+
+\newpage
+\section{Evaluation}
+
+\input{resources/evaluation-m2/info-need-2-evaluation-metrics}
+\input{resources/evaluation-m2/info-need-3-evaluation-metrics}
+\input{resources/evaluation-m2/info-need-4-evaluation-metrics}
+
+\section{Frontend}
+
+\begin{figure*}[]
+    \centering
+    \includegraphics[width=\textwidth]{resources/frontend/homepage.png}
+    \caption{Home page - Base search}
+    \label{fig:frontend-homepage1}
+\end{figure*}
+
+\begin{figure*}[]
+    \centering
+    \includegraphics[width=\textwidth]{resources/frontend/searchresults2.png}
+    \caption{Results page - Choosing documents to apply \emph{Rocchio}}
+    \label{fig:frontend-resultspage2}
+\end{figure*}
+
+
+\begin{figure*}[]
+    \centering
+    \includegraphics[width=\textwidth]{resources/frontend/searchresults3.png}
+    \caption{Results page - Documents originated by \emph{Rocchio} 'requery'}
+    \label{fig:frontend-resultspage3}
+\end{figure*}
+
+
+
+\section{Improvements Evaluation}
+
+\input{resources/evaluation-m3/Information about what hex file editors are available}
+\input{resources/evaluation-m3/Information on what python cryptography libraries are available}
+\input{resources/evaluation-m3/Information on what web servers are available in Ubuntu's repository}

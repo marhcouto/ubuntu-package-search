@@ -1,0 +1,45 @@
+\section{Improvements Evaluation}
+
+\subsection{Evaluation Setup and Changes}
+
+In order o perform evaluation of the improvements made, we used the same scripts and methods as in the last Milestone. The only change that needed to be performed again was he reevaluation of the relevance of each document retrieved by the query, as the improved systems could be misleadingly ranking low in the metrics because documents that were actually relevant and retrieved by them were not in the list of relevant documents retrieved by the other systems. The information needs evaluated were also the same, being Information Need 1 the only one evaluated in terms of recall.
+
+The new setups evaluated are:
+
+\begin{description}
+    \item[IBoosts] using the independent boosts described before
+    \item[Rocchio] using the \emph{Rocchio} algorithm
+\end{description}
+
+\subsection{Results and Discussion}
+
+The results were very underwhelming. As shown in Figures \ref{fig:info-need-2-prcurve2}, \ref{fig:info-need-3-prcurve2} and \ref{fig:info-need-4-prcurve2}, as well as tables \ref{tab:maps-2}, \ref{tab:metrics-info-1-2} and \ref{tab:mp5-2}, none of the new setups were able to improve the system in any kind of way above the 'Good setup''s quality standards, the best setup of the last Milestone. 
+
+We hypothesize that the independent boosts did not work as well as expected due to the same reason that generating a signal taking into account dependencies between packages would not work: many big important packages are dependent on smaller simpler ones, thus causing the latter ones to have more downloads.
+
+The results obtained in the \emph{Rocchio} setup % TODO
+
+\input{resources/evaluation-m3/Information on the java development kit packages available}
+\input{resources/evaluation-m3/map}
+\input{resources/evaluation-m3/mp5}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m3/Information on what web servers are available in Ubuntu's repository.pdf}
+    \caption{Information Need 2 Precision Recall Curve}
+    \label{fig:info-need-2-prcurve2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m3/Information on what python cryptography libraries are available.pdf}
+    \caption{Information Need 4 Precision Recall Curve}
+    \label{fig:info-need-4-prcurve2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{resources/evaluation-m3/Information about what hex file editors are available.pdf}
+    \caption{Information Need 3 Precision Recall Curve}
+    \label{fig:info-need-3-prcurve2}
+\end{figure}

@@ -1,0 +1,32 @@
+\section{Dataset Characterization}
+\label{sec:Characterization}
+
+
+Aiming to better understand the collected data and its characteristics, a final characterization step was taken. In this step, we used \emph{Python} scripts and libraries such as \emph{Pandas}, \emph{MatPlotLib}\footnote{\url{https://matplotlib.org/}} and \emph{Numpy}\footnote{\url{https://numpy.org/}} to help us collect and plot the data in suitable formats for the visualization of the intended information. 
+
+One of our concerns was to understand how the packages distributed themselves between the repositories. The graph in Figure \ref{fig:package-origins} demonstrates that most packages belong to the universe repository, where community maintained free software lives.
+
+To understand how the software was distributed in sections, the graph in Figure \ref{fig:package-sections} was plotted, which shows that most of the top 15 sections with most packages are related to programming languages. Aiming to understand exactly what these sections held, we generated word clouds from the descriptions of the packages that belonged to these sections. One example of the files resultant from this operation is in Figure \ref{fig:word-cloud}, which tipped us that the packages in these sections were mostly libraries for the said programming languages. 
+
+Lastly, with the intent to further analyze the quality of the resulting dataset, Table \ref{tab:existing-values} shows us the proportion of existing values (to missing values) in each column of the dataset.
+
+\input{resources/na-char}
+
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\linewidth]{resources/num_pack_origin.pdf}
+    \caption{Packages by Origin}
+    \label{fig:package-origins}
+\end{figure}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\linewidth]{resources/top_pack_num_per_sec.pdf}
+    \caption{Packages by Section}
+    \label{fig:package-sections}
+\end{figure}
+
+
+\subsection{Text Analysis}
+As an additional step and with the objective to facilitate the search tasks and retrieval of information,  we performed \textbf{keyword extraction}. For this we used a \emph{Python} library called \emph{KeyBERT}\footnote{\url{https://maartengr.github.io/KeyBERT/}}, that used a keyword extraction algorithm called \emph{all-MiniLM-L6-v2}. This step did not bring any good results.

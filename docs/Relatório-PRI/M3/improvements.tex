@@ -1,0 +1,79 @@
+\section{Improvements}
+
+We applied two strategies in order to try to improve our system:
+
+\begin{itemize}
+    \item application of independent boosts based on the number of downloads of a certain package (and other similar data)
+    \item application of a relevance feedback algorithm; we chose Rocchio
+\end{itemize}
+
+In order to make possible one of these strategies, as well as increasing the possibilities of queries made to the system, a GUI was created.
+
+\subsection{Independent Boosts}
+
+Our data set provides a list of dependencies for almost all packages so we thought of using the number of packages that depend om some package as a good indicator of package relevance, but this strategy highly benefits libraries to the detriment of programs.
+
+Another good indicator of a package relevance is the number of downloads a certain package has. It works like a reputation system: the most downloaded packages have more probability of being relevant. Better even would be a signal that would indicate how much users use a certain package. However, aptitude does not provide any of this data, so we restored to use statistics provided by Debian Popularity Contest \footnote{\url{https://popcon.debian.org/}}. \emph{Popcon} collects user information about the number of debian package downloads, updates and regular users. In order to collect data about users they must install a package called \textit{popularity-contest}. Although we are building an Ubuntu package search systems most Ubuntu packages are shared between both Linux Distributions. For the data set we used, 207276 submissions were considered \cite{popcontest}.
+
+From the signals provided by the data set, we utilized 2 of them to create a relevance formula:
+
+\begin{description}
+    \item[inst] number of people who installed this package
+    \item[vote] number of people who use this package regularly
+\end{description}
+
+\textbf{Formula:} $inst*0.0001 + vote*0.01$
+
+This data was added to the final data set through the addition of some instructions in the data processing pipeline.
+
+\subsection{Relevance Feedback}
+
+In the effort to further improve our system, we implemented a relevance feedback system with the help of \emph{Rocchio}. This algorithm was developed using the Vector Space Model\footnote{\url{https://en.wikipedia.org/wiki/Vector_space_model}} as its basis. This means that our query and documents are represented as vectors, the goal being to produce a query vector that maximizes the proximity with the \emph{centroid} of relevant documents while minimizing the proximity with the \emph{centroid} of irrelevant documents. 
+The ideal query can then be translated as \cite{rocchioformulations}:
+\begin{align}
+    \overrightarrow{q}_{opt} = \frac{1}{|C_r|} \sum_{\overrightarrow{d_j} \in C_r} \overrightarrow{d_j} - \frac{1}{|C_{nr}|} \sum_{\overrightarrow{d_j} \in C_{nr}} \overrightarrow{d_j}
+\end{align}
+
+Where $\overrightarrow{q}_{opt}$ is the optimal query, $|C_r|$ is the collection of relevant documents and $|C_{nr}|$ is the collection of non-relevant documents. The issue with this formulation is that it requires the user to evaluate the whole collection. So we need to use the following approximation \cite{rocchioformulations}: 
+
+\begin{align}
+    \overrightarrow{q}_i = \alpha \overrightarrow{q}_0 + \beta \frac{1}{|D_r|} \sum_{\overrightarrow{d_j} \in D_r} \overrightarrow{d_j} - \gamma \frac{1}{|D_{nr}|} \sum_{\overrightarrow{d_j} \in D_{nr}} \overrightarrow{d_j}
+\end{align}
+
+Where $\overrightarrow{q}_i$ is the improved query and $\overrightarrow{q}_0$ is the initial query. $|D_r|$ and $|D_{nr}|$ are respectively the documents the user considered relevant and irrelevant. And finally $\alpha$, $\beta$ and $\gamma$ are weights assigned to each term. \cite{rocchioformulations}
+
+\subsubsection{Implementation Details}
+
+To implement the Rocchio algorithm we need to get information about three variables:
+
+\begin{itemize}
+    \item A vector with both document classes terms
+    \item A vector with query terms
+    \item List of relevant and irrelevant documents for a query
+\end{itemize}
+
+We implemented Rocchio only considering the field we called Description and to get document classes terms we used SOLR Term Vectors\footnote{\url{https://solr.apache.org/guide/8_0/the-term-vector-component.html}} that returned for each field term it's frequency.
+
+To get the query terms we needed to turn on the query debug mode so that we could parse the data from the field \textit{parsedquery} that contains the functions that will be applied to each term thus obtaining them.
+
+Finally, to obtain a list of relevant documents, we built a GUI that allows a user to mark relevant documents for a query and a backend that supports the \emph{Rocchio} algorithm.
+
+
+\subsection{GUI}
+
+The last thing made in Milestone 3 was the a Graphical User Interface (frontend). The frontend was developed using \emph{React.js} and aims to, not only make the \emph{Rocchio} application possible, but also provide a platform for usage of our system where filtering and weighting parameters can be passed to the search task.
+
+In Figure \ref{fig:frontend-homepage1} we can see he homepage of the web-app. This page allows he user to perform a search. This search can be done with no filters and the default weight settings for each field, or with personalization of these aspects, which can be seen in Figure \ref{fig:frontend-homepage3}. The results page shows the list of packages resultant and all the information regarding them (more information can be attained by clicking 'see more' button) (Figure \ref{fig:frontend-resultspage2}. In the same figure, the buttons that allow for selection of the relevant documents are also present. Utilizing the 'requery' button, the previous query can be remade using the \emph{Rocchio} algorithm (Figure \ref{fig:frontend-resultspage3}). 
+
+
+
+\begin{figure*}[]
+    \centering
+    \includegraphics[width=\textwidth]{resources/frontend/homepage3.png}
+    \caption{Home page - Search with weights and filters}
+    \label{fig:frontend-homepage3}
+\end{figure*}
+
+
+
+

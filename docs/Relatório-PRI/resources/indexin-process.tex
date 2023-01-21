@@ -1,0 +1,23 @@
+\begin{lstlisting}[language=bash, captionpos=b, columns=fullflexible, basicstyle=\small, caption=Indexing Process Commands, label={lst:indexing-process}]
+
+# Schema definition via API
+curl -X POST -H 'Content-type:application/json' \
+    --data-binary 
+    @./solr/schema_ngrams.json \
+    http://localhost:8983/solr/pri_solr_ngrams/schema
+
+# Data definition via API
+curl -X POST -H 'Content-type:text/csv' \
+    --data-binary 
+    @../pipeline/out/csv_data/clean/final_solr.csv \
+    http://localhost:8983/solr/pri_solr_ngrams/update
+    ?commit=true
+
+# Data definition via API
+curl -X POST -H 'Content-type:text/csv' \
+    --data-binary 
+    @../pipeline/out/csv_data/clean/final_solr.csv \
+    http://localhost:8983/solr/pri_solr_bad/update
+    ?commit=true
+
+\end{lstlisting}
